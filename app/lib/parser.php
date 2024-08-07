@@ -18,9 +18,6 @@ class Parser
         public string $calendar_file_url,
         public int $event_age_threshold = 86400,
     ) {
-        // if (($this->event_age_threshold < 0)) {
-        //     $this->event_age_threshold = 0;
-        // }
         $this->event_age_threshold = max(0, $this->event_age_threshold);
     }
 
@@ -87,27 +84,31 @@ class Parser
     }
 
 
-    protected static function extract_summary(string $event): string|null
+    protected static function extract_summary(string $event): string
     {
         preg_match('/SUMMARY:(.+)?/', $event, $match);
-        return ($match) ? trim($match[1]) : null;
+        return ($match) ? trim($match[1]) : '';
     }
 
 
-    protected static function extract_categories(string $event): string|null
+
+    protected static function extract_categories(string $event): string
     {
         preg_match('/CATEGORIES:(.+)?/', $event, $match);
-        return ($match) ? trim($match[1]) : null;
+        return ($match) ? trim($match[1]) : '';
     }
 
 
-    protected static function extract_timestamp(string $event, string $key): int|null
+    protected static function extract_timestamp(string $event, string $key): int
     {
         preg_match('/'.strtoupper($key).';TZID=(.+)?:(.+)?/', $event, $match);
-        $dt = new DateTime($match[2], new DateTimeZone($match[1]));
-        $dt->setTimezone(new DateTimeZone('UTC'));
-        return $dt->getTimestamp();
-    }
+        if ($match) {
+            $dt = new DateTime($match[2], new DateTimeZone($match[1]));
+            $dt->setTimezone(new DateTimeZone('UTC'));
+            return $dt->getTimestamp();
+        }
 
+        return 0;
+    }
 
 }
