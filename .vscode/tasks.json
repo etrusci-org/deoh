@@ -1,0 +1,32 @@
+{
+    "version": "2.0.0",
+    "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": true
+    },
+    "tasks": [
+        {
+            "label": "build",
+            "dependsOn": [
+                "watch_ts",
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "watch_ts",
+            "type": "shell",
+            "command": "tsc --watch -p ./tsconfig.json",
+            "isBackground": true,
+            "problemMatcher": [],
+            "presentation": {
+                "group": "build"
+            }
+        },
+    ]
+}

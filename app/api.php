@@ -25,7 +25,7 @@ $output = [
 
 try {
     if (!isset($_GET['calendar_file_url']) || empty($_GET['calendar_file_url'])) {
-        throw new Exception('missing param "calendar_file_url"');
+        throw new Exception('missing or empty param "calendar_file_url"');
     }
 
     if (!filter_var($_GET['calendar_file_url'], FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)) {
