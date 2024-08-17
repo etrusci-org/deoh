@@ -9,7 +9,7 @@ use Exception;
 require __DIR__.'/lib/parser.php';
 
 
-
+// print_r($_GET);
 
 $output = [
     'info' => [
@@ -19,6 +19,7 @@ $output = [
     'error' => [],
     'events_age_threshold' => 0,
     'events_count' => 0,
+    'dtopen_subtrahend' => 0,
     'events' => [],
 ];
 
@@ -32,15 +33,21 @@ try {
         throw new Exception('bad "calendar_file_url"');
     }
 
-    $calendar_file_url = trim($_GET['calendar_file_url']);
+    if (!isset($_GET['dtopen_subtrahend']) || !is_numeric($_GET['dtopen_subtrahend'])) {
+        throw new Exception('missing or empty param "dtopen_subtrahend"');
+    }
 
-    $Parser = new Parser(calendar_file_url: $calendar_file_url);
+    $calendar_file_url = trim($_GET['calendar_file_url']);
+    $dtopen_subtrahend = intval($_GET['dtopen_subtrahend']);
+
+    $Parser = new Parser(calendar_file_url: $calendar_file_url, dtopen_subtrahend: $dtopen_subtrahend);
 
     $Parser->fetch_raw_calendar_data();
     $Parser->parse_raw_calendar_data();
 
     $output['events_age_threshold'] = $Parser->event_age_threshold;
     $output['events_count'] = count($Parser->events);
+    $output['dtopen_subtrahend'] = $Parser->dtopen_subtrahend;
     $output['events'] = $Parser->events;
 }
 catch (Exception $boo) {

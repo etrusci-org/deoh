@@ -17,8 +17,10 @@ class Parser
     public function __construct(
         public string $calendar_file_url,
         public int $event_age_threshold = 86400,
+        public int $dtopen_subtrahend = 1800,
     ) {
         $this->event_age_threshold = max(0, $this->event_age_threshold);
+        $this->dtopen_subtrahend = max(0, 60 * $this->dtopen_subtrahend);
     }
 
 
@@ -54,10 +56,15 @@ class Parser
             $categories = $this->extract_categories($event);
             $dtstart = $this->extract_timestamp($event, key: 'dtstart');
             $dtend = $this->extract_timestamp($event, key: 'dtend');
+            $dtopen = $dtstart - $this->dtopen_subtrahend;
+
+            // print_r($dtopen.PHP_EOL);
+            // print_r($dtstart.PHP_EOL.PHP_EOL.PHP_EOL);
 
             $this->events[] = [
                 'summary' => $summary,
                 'categories' => $categories,
+                'dtopen' => $dtopen,
                 'dtstart' => $dtstart,
                 'dtend' => $dtend,
             ];

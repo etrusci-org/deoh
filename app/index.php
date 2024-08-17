@@ -23,25 +23,34 @@
                 <li><strong><a href="./">Discord Event Organisator Helper</a></strong></li>
             </ul>
             <ul>
-                <li><a href="./api.php?calendar_file_url=<?php print($_GET['calendar_file_url'] ?? ''); ?>">api</a></li>
+                <li><a href="./api.php?calendar_file_url=<?php print($_GET['calendar_file_url'] ?? ''); ?>&dtopen_subtrahend=<?php print($_GET['dtopen_subtrahend'] ?? ''); ?>">api</a></li>
             </ul>
         </nav>
     </header>
 
     <main class="container">
-        <?php
-        if (
-            !isset($_GET['calendar_file_url'])
-            || empty($_GET['calendar_file_url'])
-            || !filter_var($_GET['calendar_file_url'], FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)
-        ):
-        ?>
+        <?php if (!isset($_GET['calendar_file_url'])): ?>
+
             <form action="?" method="get">
-                <fieldset role="group">
-                    <input type="url" name="calendar_file_url" placeholder="https://example.org/cal.ics" required>
-                    <input type="submit" value="load">
+                <fieldset>
+                    <label>
+                        Calendar file URL:
+                        <input type="url" name="calendar_file_url" placeholder="https://ics.teamup.com/feed/example/calendar.ics" required>
+                    </label>
                 </fieldset>
+
+                <fieldset>
+                    <label>
+                        Open time subtrahend:
+                        <input type="number" name="dtopen_subtrahend" min="0" value="30" required>
+                        <small>minutes, relative to start time</small>
+                    </label>
+                </fieldset>
+
+                <input type="submit" value="load">
+
             </form>
+
 
         <?php else: ?>
 
