@@ -13,13 +13,17 @@ require __DIR__.'/lib/parser.php';
 
 $output = [
     'info' => [
-        'work in progress',
-        'all timestamps = UTC',
+        'all event timestamps = UTC',
+        'events with a dtstart time < (time.now - event_age_threshold) will not be displayed',
+        'required_url_params' => [
+            'calendar_file_url = <URL_TO_CALENDAR_FILE>',
+            'dtopen_subtrahend = <MINUTES> (will be converted to seconds in this JSON output)',
+        ],
     ],
     'error' => [],
-    'events_age_threshold' => 0,
-    'events_count' => 0,
-    'dtopen_subtrahend' => 0,
+    'dtopen_subtrahend' => -1,
+    'event_age_threshold' => -1,
+    'events_count' => -1,
     'events' => [],
 ];
 
@@ -45,7 +49,7 @@ try {
     $Parser->fetch_raw_calendar_data();
     $Parser->parse_raw_calendar_data();
 
-    $output['events_age_threshold'] = $Parser->event_age_threshold;
+    $output['event_age_threshold'] = $Parser->event_age_threshold;
     $output['events_count'] = count($Parser->events);
     $output['dtopen_subtrahend'] = $Parser->dtopen_subtrahend;
     $output['events'] = $Parser->events;

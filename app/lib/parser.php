@@ -58,9 +58,6 @@ class Parser
             $dtend = $this->extract_timestamp($event, key: 'dtend');
             $dtopen = $dtstart - $this->dtopen_subtrahend;
 
-            // print_r($dtopen.PHP_EOL);
-            // print_r($dtstart.PHP_EOL.PHP_EOL.PHP_EOL);
-
             $this->events[] = [
                 'summary' => $summary,
                 'categories' => $categories,

@@ -1,7 +1,4 @@
 "use strict";
-window.addEventListener('load', async () => {
-    load_calendar();
-}, false);
 const load_calendar = async () => {
     const output_element = document.querySelector('.calendar_output');
     if (!output_element)
@@ -10,6 +7,11 @@ const load_calendar = async () => {
     const calendar_file_url = params.get('calendar_file_url');
     const dtopen_subtrahend = params.get('dtopen_subtrahend');
     const data = await api_request([`calendar_file_url=${calendar_file_url}`, `dtopen_subtrahend=${dtopen_subtrahend}`]);
+    output_element.innerHTML = `
+        <div class="head">
+            <small>displaying ${data.events_count} events</small>
+        </div>
+    `;
     data.events.forEach(v => {
         const container = document.createElement('div');
         container.classList.add('event');
@@ -48,3 +50,4 @@ const human_timestamp = (unixtime_ms, format = '{year}-{month}-{day} {hour}:{min
     f = f.replace('{tzoffset}', `UTC${String(dt.getTimezoneOffset() / 60)}`);
     return f;
 };
+window.addEventListener('load', load_calendar, false);

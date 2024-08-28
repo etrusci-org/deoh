@@ -1,7 +1,7 @@
 interface APIData {
     info: string[]
     error: string[]
-    events_age_threshold: number
+    event_age_threshold: number
     events_count: number
     events: APIDataEvent[]
 }
@@ -17,11 +17,6 @@ interface APIDataEvent {
 
 
 
-window.addEventListener('load', async () =>
-{
-    load_calendar()
-}, false)
-
 
 const load_calendar = async (): Promise<void> =>
 {
@@ -33,6 +28,12 @@ const load_calendar = async (): Promise<void> =>
     const calendar_file_url: string | null = params.get('calendar_file_url')
     const dtopen_subtrahend: string | null = params.get('dtopen_subtrahend')
     const data: APIData = await api_request([`calendar_file_url=${calendar_file_url}`, `dtopen_subtrahend=${dtopen_subtrahend}`])
+
+    output_element.innerHTML = `
+        <div class="head">
+            <small>displaying ${data.events_count} events</small>
+        </div>
+    `
 
     data.events.forEach(v => {
         const container: HTMLDivElement = document.createElement('div')
@@ -60,11 +61,11 @@ const load_calendar = async (): Promise<void> =>
 
 
 const api_request = async (params: string[] = []): Promise<APIData> =>
-    {
-        const p: string = params.join('&')
+{
+    const p: string = params.join('&')
 
-        return fetch(`./api.php?${p}`, { method: 'GET', cache: 'no-cache' }).then((r) => r.json())
-    }
+    return fetch(`./api.php?${p}`, { method: 'GET', cache: 'no-cache' }).then((r) => r.json())
+}
 
 
 const human_timestamp = (unixtime_ms: number, format: string = '{year}-{month}-{day} {hour}:{minute}'): string =>
@@ -83,3 +84,8 @@ const human_timestamp = (unixtime_ms: number, format: string = '{year}-{month}-{
 
     return f
 }
+
+
+
+
+window.addEventListener('load', load_calendar, false)
