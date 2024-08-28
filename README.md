@@ -7,12 +7,13 @@ Helper tool - made for friends who organize parties - to load calendar informati
 
 ## Usage
 
-1. Enter the *Calendar file URL*.
-2. Adjust the *Open time subtrahend*.
-3. Click *load*.
+1. Go to <https://etrusci.org/tool/deoh>
+2. Enter the *Calendar file URL*.
+3. Adjust the *Open time subtrahend*.
+4. Click *load*.
 
 Note1: Currently only *.ics calendar files from teamup.com are tested.
-Note2: You can also access the data in the JSON format by querying **app/api.php**
+Note2: You can also access the data in the JSON format through <https://etrusci.org/tool/deoh/api.php>.
 
 ![1](./screenshot1.png)
 
