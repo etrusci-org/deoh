@@ -114,7 +114,7 @@ const load_calendar = async (): Promise<void> =>
     const params: URLSearchParams = new URLSearchParams(document.location.search)
     const calendar_file_url: string | null = params.get('calendar_file_url')
     const dtopen_subtrahend: string | null = params.get('dtopen_subtrahend')
-    let discord_template: string = atob(params.get('discord_template') ?? '')
+    const discord_template: string = atob(params.get('discord_template') ?? '')
     const data: APIData = await api_request([`calendar_file_url=${calendar_file_url}`, `dtopen_subtrahend=${dtopen_subtrahend}`])
 
     output_element.innerHTML = `
@@ -127,14 +127,15 @@ const load_calendar = async (): Promise<void> =>
         const container: HTMLDivElement = document.createElement('div')
         container.classList.add('event')
 
-        discord_template = discord_template.replaceAll('{summary}', v.summary)
-        discord_template = discord_template.replaceAll('{categories}', v.categories)
-        discord_template = discord_template.replaceAll('{dtopen}', v.dtopen.toString())
-        discord_template = discord_template.replaceAll('{dtstart}', v.dtstart.toString())
-        discord_template = discord_template.replaceAll('{dtend}', v.dtend.toString())
+        let discord_code_content = discord_template
+        discord_code_content = discord_code_content.replaceAll('{summary}', v.summary)
+        discord_code_content = discord_code_content.replaceAll('{categories}', v.categories)
+        discord_code_content = discord_code_content.replaceAll('{dtopen}', v.dtopen.toString())
+        discord_code_content = discord_code_content.replaceAll('{dtstart}', v.dtstart.toString())
+        discord_code_content = discord_code_content.replaceAll('{dtend}', v.dtend.toString())
 
         const discord_code = document.createElement('pre')
-        discord_code.textContent = discord_template
+        discord_code.textContent = discord_code_content
 
         container.innerHTML = `
             <strong>${v.summary}</strong><br>
