@@ -39,25 +39,35 @@
                         Calendar file URL:
                         <input type="url" name="calendar_file_url" placeholder="https://ics.teamup.com/feed/example/calendar.ics" required>
                     </label>
-                </fieldset>
-                <fieldset>
+
                     <label>
                         Open time subtrahend:
-                        <input type="number" name="dtopen_subtrahend" min="0" value="30" required>
+                        <input type="number" name="dtopen_subtrahend" min="0" required>
                         <small>minutes, relative to start time</small>
                     </label>
+
+                    <label>
+                        Discord template:
+                        <textarea name="discord_template" rows="6"></textarea>
+                        <small>available variables: {summary} {categories} {dtopen} {dtstart} {dtend}</small>
+                    </label>
                 </fieldset>
-                <input type="submit" value="load">
+                <input type="submit" value="load calendar">
+                <input type="reset" value="reset form">
             </form>
+
+            <p>
+                Form values are saved into the local storage of your webbrowser for easy reuse. If you want to reset them, click "reset form".
+            </p>
 
         <?php else: ?>
 
             <section>
                 <p>
-                    The <strong>open</strong>, <strong>start</strong> and <strong>end</strong> times on this page should be in your local time.<br>
-                    Timestamps in the code are in UTC ready to be displayed in the local time of the reader then.<br>
-                    Events with a start time < (time.now - 1 day) are not displayed.<br>
-                    You can also get the raw data in the <a href="./api.php?calendar_file_url=<?php print($_GET['calendar_file_url'] ?? ''); ?>&dtopen_subtrahend=<?php print($_GET['dtopen_subtrahend'] ?? ''); ?>">JSON</a> format.
+                    The <strong>open</strong>, <strong>start</strong> and <strong>end</strong> times on this page should be in your local time (zone: <script>document.write(Intl.DateTimeFormat().resolvedOptions().timeZone ?? 'unknown')</script>).<br>
+                    Timestamps in the Discord code are in UTC ready to be displayed in the local time of the reader then.<br>
+                    Events with a start <em>time < (time.now - 1 day)</em> are not displayed.<br>
+                    You can also get the data in the <a href="./api.php?calendar_file_url=<?php print($_GET['calendar_file_url'] ?? ''); ?>&dtopen_subtrahend=<?php print($_GET['dtopen_subtrahend'] ?? ''); ?>">JSON</a> format.
                 </p>
             </section>
             <hr>
@@ -70,4 +80,3 @@
     <script src="./lib/magic.js"></script>
 </body>
 </html>
-<!-- https://etrusci.org -->
